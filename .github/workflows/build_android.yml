@@ -25,12 +25,6 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Setup Gradle wrapper
-        working-directory: android
-        run: |
-          gradle wrapper --gradle-version 8.4
-        continue-on-error: true
-
       - name: Get dependencies
         run: flutter pub get
 
