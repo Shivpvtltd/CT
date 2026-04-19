@@ -1,63 +1,96 @@
-import 'package:flutter/material.dart';
-import '../../data/models/dns_provider_model.dart';
+// DNS Providers Configuration
+class DnsProvider {
+  final String id;
+  final String name;
+  final String subtitle;
+  final String description;
+  final String hostname; // For Private DNS (DoT)
+  final String dohUrl;   // DNS over HTTPS fallback
+  final String icon;
+  final DnsStrength strength;
+
+  const DnsProvider({
+    required this.id,
+    required this.name,
+    required this.subtitle,
+    required this.description,
+    required this.hostname,
+    required this.dohUrl,
+    required this.icon,
+    required this.strength,
+  });
+}
+
+enum DnsStrength { lite, balanced, smart, strong }
 
 class DnsProviders {
-  DnsProviders._();
+  static const balanced = DnsProvider(
+    id: 'adguard',
+    name: 'Balanced Mode',
+    subtitle: 'AdGuard DNS',
+    description: 'Blocks ads & trackers. Best for daily use.',
+    hostname: 'dns.adguard-dns.com',
+    dohUrl: 'https://dns.adguard-dns.com/dns-query',
+    icon: '🛡️',
+    strength: DnsStrength.balanced,
+  );
 
-  static const List<DnsProviderModel> all = [
-    DnsProviderModel(
-      id: 'adguard',
-      name: 'Balanced',
-      description: 'Best balance of speed & blocking',
-      dnsAddresses: ['94.140.14.14', '94.140.15.15'],
-      iconName: 'shield',
-      colorValue: 0xFF3B82F6,
-      isPremiumOnly: false,
-    ),
-    DnsProviderModel(
-      id: 'nextdns',
-      name: 'Strong',
-      description: 'Maximum ad & tracker blocking',
-      dnsAddresses: ['45.90.28.0', '45.90.30.0'],
-      iconName: 'lock',
-      colorValue: 0xFFEF4444,
-      isPremiumOnly: true,
-    ),
-    DnsProviderModel(
-      id: 'controld',
-      name: 'Smart',
-      description: 'AI-optimized filtering',
-      dnsAddresses: ['76.76.2.0', '76.76.10.0'],
-      iconName: 'psychology',
-      colorValue: 0xFF8B5CF6,
-      isPremiumOnly: true,
-    ),
-    DnsProviderModel(
-      id: 'alternate',
-      name: 'Lite',
-      description: 'Minimal performance impact',
-      dnsAddresses: ['198.101.242.72', '23.253.163.53'],
-      iconName: 'feather',
-      colorValue: 0xFF10B981,
-      isPremiumOnly: false,
-    ),
-  ];
+  static const strong = DnsProvider(
+    id: 'nextdns',
+    name: 'Strong Mode',
+    subtitle: 'NextDNS',
+    description: 'Advanced filtering. Blocks ads, trackers & malware.',
+    hostname: 'dns.nextdns.io',
+    dohUrl: 'https://dns.nextdns.io/dns-query',
+    icon: '⚡',
+    strength: DnsStrength.strong,
+  );
 
-  static DnsProviderModel getById(String id) {
-    return all.firstWhere(
-      (p) => p.id == id,
-      orElse: () => all.first,
-    );
-  }
+  static const smart = DnsProvider(
+    id: 'controld',
+    name: 'Smart Mode',
+    subtitle: 'Control D',
+    description: 'Smart filtering with category control.',
+    hostname: 'freedns.controld.com',
+    dohUrl: 'https://freedns.controld.com/p1',
+    icon: '🧠',
+    strength: DnsStrength.smart,
+  );
 
-  static DnsProviderModel get defaultProvider => all.first;
+  static const lite = DnsProvider(
+    id: 'alternate',
+    name: 'Lite Mode',
+    subtitle: 'Alternate DNS',
+    description: 'Light ad blocking. Minimal impact on speed.',
+    hostname: 'dns.alternate-dns.com',
+    dohUrl: 'https://dns.alternate-dns.com/dns-query',
+    icon: '🌿',
+    strength: DnsStrength.lite,
+  );
 
-  static List<DnsProviderModel> get freeProviders =>
-      all.where((p) => !p.isPremiumOnly).toList();
+  static const List<DnsProvider> all = [balanced, strong, smart, lite];
 
-  static List<DnsProviderModel> get premiumProviders =>
-      all.where((p) => p.isPremiumOnly).toList();
+  // Fallback order
+  static const List<DnsProvider> fallbackOrder = [balanced, smart, lite, strong];
+}
 
-  static List<String> get fallbackOrder =>
-      all.map((p) => p.id).toList();
+// Session constants
+class SessionConfig {
+  static const int sessionDurationHours = 6;
+  static const Duration sessionDuration = Duration(hours: 6);
+  static const String prefsKeySessionStart = 'session_start_ms';
+  static const String prefsKeyDnsEnabled = 'dns_enabled';
+  static const String prefsKeySelectedDns = 'selected_dns_id';
+  static const String prefsKeyThemeMode = 'theme_mode';
+  static const String prefsKeyOnboardingDone = 'onboarding_done';
+  static const String prefsKeySessionActive = 'session_active';
+}
+
+// App Info
+class AppInfo {
+  static const String appName = 'DNSGuard';
+  static const String tagline = 'Ad Protection, Simplified';
+  static const String version = '1.0.0';
+  static const String playStoreUrl =
+      'https://play.google.com/store/apps/details?id=com.dnsguard.app';
 }

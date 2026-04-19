@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">shieldx.app</domain>
-    </domain-config>
     <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
-            <certificates src="system"/>
+            <certificates src="system" />
         </trust-anchors>
     </base-config>
+
+    <!-- Trusted DNS providers for DoH/DoT -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">dns.adguard-dns.com</domain>
+        <domain includeSubdomains="true">dns.nextdns.io</domain>
+        <domain includeSubdomains="true">freedns.controld.com</domain>
+        <domain includeSubdomains="true">dns.alternate-dns.com</domain>
+    </domain-config>
 </network-security-config>
